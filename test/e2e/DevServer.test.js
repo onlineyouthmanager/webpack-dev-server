@@ -95,6 +95,22 @@ describe('DevServer', () => {
       .catch(done);
   });
 
+  it('should show a warning for live reloading with non-web target', (done) => {
+    testBin(
+      '--config ./test/fixtures/dev-server/default-config.js --target node --live-reload'
+    )
+      .then((output) => {
+        expect(output.stderr).toContain(
+          'A non-web target was selected in dev server config'
+        );
+        expect(output.stderr).toContain(
+          'Live reload will not work with a non-web target'
+        );
+        done();
+      })
+      .catch(done);
+  });
+
   it('does not use client.path when default', (done) => {
     testBin('--config ./test/fixtures/dev-server/client-default-path-config.js')
       .then((output) => {
